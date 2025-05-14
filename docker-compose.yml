@@ -6,7 +6,19 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8082:8082"
+      - "8082:80"
     restart: unless-stopped
     environment:
-      - NODE_ENV=production 
+      - NODE_ENV=production
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:3000"  # Expose backend on host:container (adjust as needed)
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - AUTH_URL=your_auth_url
+      - PROPELAUTH_API_KEY=your_api_key 
