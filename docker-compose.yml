@@ -10,15 +10,23 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+    networks:
+      - app-network
 
   backend:
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "5000:3000"  # Expose backend on host:container (adjust as needed)
+      - "5000:3000"
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-      - AUTH_URL=your_auth_url
-      - PROPELAUTH_API_KEY=your_api_key 
+      - AUTH_URL= https://auth.api.xpectrum-ai.com
+      - PROPELAUTH_API_KEY=39ba5d0fa20b8f7a25b22a5370188e2ed30d0d57db24deb66b1be755c1ef69c85979d717100d0f5b5d5cd22958518819
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
