@@ -1,12 +1,35 @@
-version: '3.8'
-
 services:
   web:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8082:8082"
+      - "8082:80"
     restart: unless-stopped
     environment:
-      - NODE_ENV=production 
+      - NODE_ENV=production
+      - VITE_AUTH_URL=https://auth.api.xpectrum-ai.com
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - AUTH_URL=https://auth.api.xpectrum-ai.com
+      - PROPELAUTH_API_KEY=dcec1346dfb61ce07430cddbba6379017a9af280b8ea05ffee3611a608d2f67ac69cce5eb4ce41d217a96ecab17a18c2
+      - PROPELAUTH_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzivBxIInVT8jz66UwiQO\ntI60bGy4/5eiK0bIDERVr7KvgvQjRzWi6W4yHZuvR9qoDA0S2mULsN7f3fn093Ko\nbWSoPLAuAUwEm4GGJpc7YiNFD7MUww69m3nyFAp7aPNfOLcYWmRDexibnvmmAEMZ\nkyDjEVgVjOBRJB5JdgmLa220OqYxoyQtneTVBHJUykm+7Pi0xuTlVqef6gTd/BQz\nmGFLxIRrNEm2qQZJmCN2zIDphpLLTu9cJl6gmmpBSTiMJyGKHV6Szf6BPpniDJci\nWqjuKPVSoor4zG/9fiF7c3NYwD//PNSLCXGj5Uzq2mcu7BUG/c7d5xvQqUSNGd7t\n9wIDAQAB\n-----END PUBLIC KEY-----"
+      - PROPELAUTH_ISSUER=https://auth.api.xpectrum-ai.com
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
