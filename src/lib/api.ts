@@ -3,7 +3,7 @@ import { getApiKeys } from '../utils/secretsManager';
 import { SECRET_NAMES, ApiKeysSecret } from '../config/secrets';
 
 // API Configuration
-const API_URL = 'https://hrms-api.xpectrum-ai.com';
+const API_URL = '/api';
 
 // Create axios instance with default config
 const api = axios.create({
